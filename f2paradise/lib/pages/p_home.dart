@@ -12,8 +12,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Modify these variables depending on the result of internet connection
-  bool hasInternetConnection = false;
-  bool hasLocalData = false;
+  bool hasInternetConnection = true;
+  bool hasLocalData = true;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                           Icons.search_outlined,
                           color: Theme.of(context).colorScheme.tertiary
                         ),
-                        hintText: 'Busca por título, género, etc.',
+                        hintText: 'Search by title, genre, etc.',
                         filled: true,
                         fillColor: Color(0xFF232323),
                         border: OutlineInputBorder(
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 20),
               // Tags for categories.
               Text(
-                'Categorías',
+                'Categories',
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 10),
@@ -109,9 +109,9 @@ class _HomePageState extends State<HomePage> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    CategoryTag(label: 'Acción'),
-                    CategoryTag(label: 'Aventura'),
-                    CategoryTag(label: 'Estrategia'),
+                    CategoryTag(label: 'Action'),
+                    CategoryTag(label: 'Adventure'),
+                    CategoryTag(label: 'Strategy'),
                     CategoryTag(label: 'RPG'),
                   ],
                 ),
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 20),
               // Recents section.
               Text(
-                'Recientes',
+                'Recents',
                 style: TextStyle(color: Colors.white)
               ),
               SizedBox(height: 10),
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 20),
               // Recommended section.
               Text(
-                'Recomendados',
+                'Recommended',
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 10),
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 20),
               // Explore-something-new section.
               Text(
-                'Explora algo nuevo',
+                'Explore something new',
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 10),
@@ -227,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                           Icons.search_outlined,
                           color: Theme.of(context).colorScheme.tertiary
                         ),
-                        hintText: 'Busca por título, género, etc.',
+                        hintText: 'Search by title, genre, etc.',
                         filled: true,
                         fillColor: Color(0xFF232323),
                         border: OutlineInputBorder(
@@ -251,7 +251,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 20),
               // Tags for categories.
               Text(
-                'Categorías',
+                'Categories',
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 10),
@@ -260,9 +260,9 @@ class _HomePageState extends State<HomePage> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    CategoryTag(label: 'Acción'),
-                    CategoryTag(label: 'Aventura'),
-                    CategoryTag(label: 'Estrategia'),
+                    CategoryTag(label: 'Action'),
+                    CategoryTag(label: 'Adventure'),
+                    CategoryTag(label: 'Strategy'),
                     CategoryTag(label: 'RPG'),
                   ],
                 ),
@@ -270,7 +270,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 20),
               // Recents section.
               Text(
-                'Recientes',
+                'Recents',
                 style: TextStyle(color: Colors.white)
               ),
               SizedBox(height: 10),
@@ -301,13 +301,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'No hay conexión',
+                      'No connection',
                       style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Parece que no tienes conexión a Internet\nConéctate a una red para ver las demás secciones',
+                      'It seems you have no Internet connection\nConnect to a network to see other sections',
                       style: TextStyle(color: Colors.white, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
@@ -377,13 +377,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'No hay conexión',
+                      'No connection',
                       style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Parece que no tienes conexión a Internet\nConéctate a una red e inténtalo de nuevo',
+                      'It seems you have no Internet connection\nConnect to a network and try again',
                       style: TextStyle(color: Colors.white, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
@@ -470,7 +470,7 @@ class GameCard extends StatelessWidget {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     onPressed: () {
-                      // Add code here to add the game to wihslist.
+                      // Add code here to add the game to wishlist.
                     },
                   ),
                 ),
