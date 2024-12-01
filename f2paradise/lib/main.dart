@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          surface: const Color.fromARGB(255, 35, 35, 35),
+          surface: const Color.fromARGB(255, 0, 0, 0),
           seedColor: const Color.fromARGB(255, 35, 35, 35),
           primary: const Color.fromARGB(255, 47, 79, 79),
           secondary: const Color.fromARGB(255, 31, 236, 255),
