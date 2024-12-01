@@ -1,3 +1,4 @@
+import 'package:f2paradise/pages/p_about.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,7 +37,10 @@ class _HomePageState extends State<HomePage> {
               color: Theme.of(context).colorScheme.secondary
             ),
             onPressed: () {
-              // Add code here to nevigate to About page.
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutPage()),
+              );
             },
             tooltip: 'About',
           ),
