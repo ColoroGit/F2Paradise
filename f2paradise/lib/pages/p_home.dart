@@ -12,8 +12,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Modify these variables depending on the result of internet connection
-  bool hasInternetConnection = true;
-  bool hasLocalData = true;
+  bool hasInternetConnection = false;
+  bool hasLocalData = false;
 
   @override
   Widget build(BuildContext context) {
@@ -355,43 +355,30 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 50),
-              // No internet image.
-              Center(
-                child: Image.asset(
-                  'assets/icons/i_bird.jpg',
-                  width: 150,
-                  height: 150,
-                ),
-              ),
-              SizedBox(height: 20),
-              // No internet message.
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'No connection',
-                      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'It seems you have no Internet connection\nConnect to a network and try again',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // No internet image.
+            Image.asset(
+              'assets/icons/i_bird.jpg',
+              width: 150,
+              height: 150,
+            ),
+            SizedBox(height: 20),
+            // No internet message.
+            Text(
+              'No connection',
+              style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 10),
+            Text(
+              'It seems you have no Internet connection\nConnect to a network and try again',
+              style: TextStyle(color: Colors.white, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );
