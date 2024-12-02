@@ -14,11 +14,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF1FECFF),
           surface: const Color.fromARGB(255, 0, 0, 0),
-          seedColor: const Color.fromARGB(255, 35, 35, 35),
-          primary: const Color.fromARGB(255, 47, 79, 79),
-          secondary: const Color.fromARGB(255, 31, 236, 255),
-          tertiary: const Color.fromARGB(255, 167, 67, 255),
+          primary: const Color(0xFF232323),
+          secondary: const Color(0xFF1FECFF),
+          tertiary: const Color(0xFFA743FF),
         ),
         useMaterial3: true,
       ),

@@ -378,7 +378,7 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(color: Colors.white, fontSize: 14),
               textAlign: TextAlign.center,
             ),
-          ],
+          ]
         ),
       ),
     );
