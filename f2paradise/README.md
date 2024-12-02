@@ -41,20 +41,22 @@ En la fase de análisis, se prestó atención a todos los detalles de las especi
     
 15.  La aplicación debe mostrar al usuario un *feedback* según su estado de conectividad; si no está conectado, indicarle que no lo está, y que active sus datos móviles o se conecte a alguna red Wi-Fi; si está conectado, pero su red es débil, después de unos segundos de carga, hacerle saber la situación, y que por eso se está demorando en cargar la aplicación.
 
-## Mockup
+## Mockup y diagrama
 
 En la fase de diseño, se utilizó la herramienta y plataforma de diseño Figma para realizar un *mockup* de la aplicación, prestando especial atención a la interfaz del usuario para seguir los lineamientos establecidos por Material Design, el sistema de diseño desarrollado por Google, específicamente la versión 3.
 
 Sobre esta base y considerando los conocimientos en el *framework* y el lenguaje de programación, el proyecto se centró más en la presentación, para presentar un Producto Mínimo Viable apto para su comercialización.
 
-El siguiente *link* permite acceder al recurso mencionado: [F2Paradise - Mockup](https://www.figma.com/design/PagtdYaaoLmXKx44ZkEfQq/F2Paradise?node-id=15-149&node-type=frame&t=IuUVODN3CmQgjSDS-0). ***REVISAR EL LINK***
+El siguiente *link* permite acceder al recurso mencionado: [F2Paradise - Mockup](https://alumnosutalca-my.sharepoint.com/:f:/g/personal/joediaz22_alumnos_utalca_cl/Egm3jH4u8oZMoq0SRAZOLpABt4DoHAB1aRtRKsGNUjrScQ?e=rqd61o).
+
+Además, se elaboró un diagrama de arquitectura de la información que muestra la jerarquía y el orden de la información dentro de la app. El diagrama se puede ver accediendo al siguiente *link*: [F2Paradise - Diagrama de arquitectura de la información](https://alumnosutalca-my.sharepoint.com/:i:/g/personal/joediaz22_alumnos_utalca_cl/ESdA-zMv6jFLrl0ezGMsONoBJT4psU6RewKH_ar_1oJP-w?e=iTH5vR).
 
 ## APK
 
 Por último, se llevó a cabo el desarrollo de la aplicación en Flutter, considerando todos el material creado durante las fases de análisis y diseño. Dado que se creó una aplicación *cross-platform*, esta puede ser exportada a diferentes sistemas operativos. Sin embargo, debido a los recursos para realizar el *testing*, F2Paradise se exportó solo para dispositivos móviles con sistema operativo Android.
 
-El resultado de la fase de implementación se evidencia con el producto final, el cual se puede acceder mediante el siguiente link: [F2Paradise - APK](). ***REVISAR EL LINK***
+El resultado de la fase de implementación se evidencia con el producto final, el cual se puede acceder mediante el siguiente link: [F2Paradise - APK](https://alumnosutalca-my.sharepoint.com/:u:/g/personal/joediaz22_alumnos_utalca_cl/ESwp7LdRXqFMljjZFUe4_dgBr6w2A5B3ceCiMNBAhCkUAg?e=OZ5QHi).
 
 ## Presentación de la aplicación
 
-Adicionalmente y para tener una idea más clara de la aplicación (contexto, funcionamiento, objetivo, etc.), se llevó a cabo una presentación por parte de los desarrolladores, la cual se puede encontrar en el siguiente link, junto con el material utilizado: [F2Paradise - Presentación](). ***REVISAR EL LINK***
+Adicionalmente y para tener una idea más clara de la aplicación (contexto, funcionamiento, objetivo, etc.), se llevó a cabo una presentación por parte de los desarrolladores, la cual se puede encontrar en el siguiente link, junto con el material utilizado: [F2Paradise - Presentación](https://alumnosutalca-my.sharepoint.com/:f:/g/personal/joediaz22_alumnos_utalca_cl/Ei02Zhobb4JHnVAe1Y1qGrwBNxxpAoT7X8CiASBAPn0Cxw?e=uW9uPI).
