@@ -1,4 +1,4 @@
-package com.example.f2paradise
+package cl.horus.f2paradise
 
 import io.flutter.embedding.android.FlutterActivity
 
