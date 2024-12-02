@@ -220,7 +220,7 @@ class _MyListPageState extends State<MyListPage> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    '${game.genre} - ${game.platform}',
+                                    '${game.genre}   ⬤   ${game.platform}',
                                     style: const TextStyle(
                                       fontSize: 14,
                                       color: Colors.white,

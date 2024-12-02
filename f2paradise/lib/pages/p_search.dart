@@ -66,6 +66,7 @@ class _SearchPageState extends State<SearchPage> {
   List<Game> searchResults = [];
   List<Game> allGames = [];
   bool noResults = false;
+  bool firstTime = true;
 
   Future<void> fetchGames() async {
     String url;
@@ -124,6 +125,7 @@ class _SearchPageState extends State<SearchPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                autofocus: firstTime,
                 cursorColor: Colors.white,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -179,6 +181,9 @@ class _SearchPageState extends State<SearchPage> {
                   setState(() {
                     searchQuery = value;
                     noResults = false;
+                    if (firstTime) {
+                      firstTime = false;
+                    }
                   });
                   fetchGames();
                 },
@@ -278,7 +283,7 @@ class _SearchPageState extends State<SearchPage> {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          '${game.genre} - ${game.platform}',
+                                          '${game.genre}   ⬤   ${game.platform}',
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.white,

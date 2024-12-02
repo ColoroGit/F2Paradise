@@ -1,4 +1,6 @@
+import 'package:f2paradise/models/game.dart';
 import 'package:f2paradise/pages/p_about.dart';
+import 'package:f2paradise/pages/p_search.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,8 +14,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Modify these variables depending on the result of internet connection
-  bool hasInternetConnection = false;
-  bool hasLocalData = false;
+  bool hasInternetConnection = true;
+  bool hasLocalData = true;
+  List<Game> games = [
+
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -83,40 +88,48 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide.none
                         ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.filter_alt_outlined,
-                            color: Theme.of(context).colorScheme.tertiary,
-                          ),
-                          onPressed: () {
-                            // Add code here to display pop-up with tags to select.
-                          },
-                        ),
+                        // suffixIcon: IconButton(
+                        //   icon: Icon(
+                        //     Icons.filter_alt_outlined,
+                        //     color: Theme.of(context).colorScheme.tertiary,
+                        //   ),
+                        //   onPressed: () {
+                        //     // Add code here to display pop-up with tags to select.
+                        //   },
+                        // ),
                       ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SearchPage(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 20),
-              // Tags for categories.
-              Text(
-                'Categories',
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: 40,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    CategoryTag(label: 'Action'),
-                    CategoryTag(label: 'Adventure'),
-                    CategoryTag(label: 'Strategy'),
-                    CategoryTag(label: 'RPG'),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
+              // // Tags for categories.
+              // Text(
+              //   'Categories',
+              //   style: TextStyle(color: Colors.white),
+              // ),
+              // SizedBox(height: 10),
+              // Container(
+              //   height: 40,
+              //   child: ListView(
+              //     scrollDirection: Axis.horizontal,
+              //     children: <Widget>[
+              //       CategoryTag(label: 'Action'),
+              //       CategoryTag(label: 'Adventure'),
+              //       CategoryTag(label: 'Strategy'),
+              //       CategoryTag(label: 'RPG'),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(height: 20),
               // Recents section.
               Text(
                 'Recents',
@@ -125,14 +138,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 10),
               Container(
                 height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    GameCard('gameName1', 'content1', 'assets/icons/i_bird.jpg'),
-                    GameCard('gameName2', 'content2', 'assets/icons/i_bird.jpg'),
-                    GameCard('gameName3', 'content3', 'assets/icons/i_bird.jpg'),
-                  ],
-                ),
+                child: ListView.builder(
+                  itemCount: games.length,
+                  itemBuilder: (context, index) {
+                    return GameCard(games[index]);
+                  },
+                )
               ),
               SizedBox(height: 20),
               // Recommended section.
@@ -143,14 +154,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 10),
               Container(
                 height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    GameCard('gameName4', 'content4', 'assets/icons/i_bird.jpg'),
-                    GameCard('gameName5', 'content5', 'assets/icons/i_bird.jpg'),
-                    GameCard('gameName6', 'content6', 'assets/icons/i_bird.jpg'),
-                  ],
-                ),
+                child: ListView.builder(
+                  itemCount: games.length,
+                  itemBuilder: (context, index) {
+                    return GameCard(games[index]);
+                  },
+                )
               ),
               SizedBox(height: 20),
               // Explore-something-new section.
@@ -161,14 +170,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 10),
               Container(
                 height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    GameCard('gameName7', 'content7', 'assets/icons/i_bird.jpg'),
-                    GameCard('gameName8', 'content8', 'assets/icons/i_bird.jpg'),
-                    GameCard('gameName9', 'content9', 'assets/icons/i_bird.jpg'),
-                  ],
-                ),
+                child: ListView.builder(
+                  itemCount: games.length,
+                  itemBuilder: (context, index) {
+                    return GameCard(games[index]);
+                  },
+                )
               ),
             ],
           ),
@@ -234,40 +241,48 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide.none
                         ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.filter_alt_outlined,
-                            color: Theme.of(context).colorScheme.tertiary,
-                          ),
-                          onPressed: () {
-                            // Add code here to display pop-up with tags to select.
-                          },
-                        ),
+                        // suffixIcon: IconButton(
+                        //   icon: Icon(
+                        //     Icons.filter_alt_outlined,
+                        //     color: Theme.of(context).colorScheme.tertiary,
+                        //   ),
+                        //   onPressed: () {
+                        //     // Add code here to display pop-up with tags to select.
+                        //   },
+                        // ),
                       ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SearchPage(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 20),
-              // Tags for categories.
-              Text(
-                'Categories',
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: 40,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    CategoryTag(label: 'Action'),
-                    CategoryTag(label: 'Adventure'),
-                    CategoryTag(label: 'Strategy'),
-                    CategoryTag(label: 'RPG'),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
+              // // Tags for categories.
+              // Text(
+              //   'Categories',
+              //   style: TextStyle(color: Colors.white),
+              // ),
+              // SizedBox(height: 10),
+              // Container(
+              //   height: 40,
+              //   child: ListView(
+              //     scrollDirection: Axis.horizontal,
+              //     children: <Widget>[
+              //       CategoryTag(label: 'Action'),
+              //       CategoryTag(label: 'Adventure'),
+              //       CategoryTag(label: 'Strategy'),
+              //       CategoryTag(label: 'RPG'),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(height: 20),
               // Recents section.
               Text(
                 'Recents',
@@ -276,14 +291,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 10),
               Container(
                 height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    GameCard('gameName1', 'content1', 'assets/icons/i_bird.jpg'),
-                    GameCard('gameName2', 'content2', 'assets/icons/i_bird.jpg'),
-                    GameCard('gameName3', 'content3', 'assets/icons/i_bird.jpg'),
-                  ],
-                ),
+                child: ListView.builder(
+                  itemCount: games.length,
+                  itemBuilder: (context, index) {
+                    return GameCard(games[index]);
+                  },
+                )
               ),
               SizedBox(height: 50),
               // No internet image.
@@ -430,11 +443,9 @@ class _CategoryTagState extends State<CategoryTag> {
 }
 
 class GameCard extends StatelessWidget {
-  final String headline;
-  final String content;
-  final String imagePath;
+  final Game game;
 
-  GameCard(this.headline, this.content, this.imagePath);
+  GameCard(this.game);
 
   @override
   Widget build(BuildContext context) {
@@ -447,7 +458,7 @@ class GameCard extends StatelessWidget {
           children: <Widget>[
             Stack(
               children: <Widget>[
-                Image.asset(imagePath, fit: BoxFit.contain, width: 250, height: 125),
+                Image.network(game.thumbnail, fit: BoxFit.contain, width: 250, height: 125),
                 Positioned(
                   top: 8.0,
                   right: 8.0,
@@ -466,7 +477,7 @@ class GameCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                headline,
+                game.title,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -477,7 +488,7 @@ class GameCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                content,
+                '${game.genre} ⬤ ${game.platform}',
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white
