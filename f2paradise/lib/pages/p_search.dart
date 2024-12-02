@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  const SearchPage({super.key, required this.hasInternetConnection});
+
+  final bool hasInternetConnection;
 
   @override
   State<StatefulWidget> createState() => _SearchPageState();
@@ -246,8 +248,11 @@ class _SearchPageState extends State<SearchPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      GameDetailsPage(game: game),
+                                  builder: (context) => GameDetailsPage(
+                                    game: game,
+                                    hasInternetConnection:
+                                        widget.hasInternetConnection,
+                                  ),
                                 ),
                               );
                             },

@@ -1,7 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:f2paradise/models/game.dart';
 import 'package:f2paradise/pages/p_about.dart';
+import 'package:f2paradise/pages/p_game_details.dart';
+import 'package:f2paradise/pages/p_my_list.dart';
 import 'package:f2paradise/pages/p_search.dart';
+import 'package:f2paradise/utils/database_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -13,491 +21,318 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final DatabaseHelper db = DatabaseHelper();
+  List<Game> recentGames = [];
+  List<Game> recommendedGames = [];
+  List<Game> exploreGames = [];
+  bool isLoading = true;
+
   // Modify these variables depending on the result of internet connection
   bool hasInternetConnection = true;
   bool hasLocalData = true;
-  List<Game> games = [
-
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    if (hasInternetConnection) {
-      return buildOnlineContent();
-    } else if (!hasInternetConnection && hasLocalData) {
-      return buildOfflineWithLocalDataContent();
-    } else {
-      return buildNoInternetContent();
-    }
-  }
-
-  Widget buildOnlineContent() {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Home',
-          style: TextStyle(color: Colors.white)
-        ),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.favorite_border,
-              color: Theme.of(context).colorScheme.secondary
-            ),
-            onPressed: () {
-              // Add code here to navigate to Wishlist page.
-            },
-            tooltip: 'WishList',
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.info_outline,
-              color: Theme.of(context).colorScheme.secondary
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AboutPage()),
-              );
-            },
-            tooltip: 'About',
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Search bar.
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search_outlined,
-                          color: Theme.of(context).colorScheme.tertiary
-                        ),
-                        hintText: 'Search by title, genre, etc.',
-                        filled: true,
-                        fillColor: Color(0xFF232323),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide.none
-                        ),
-                        // suffixIcon: IconButton(
-                        //   icon: Icon(
-                        //     Icons.filter_alt_outlined,
-                        //     color: Theme.of(context).colorScheme.tertiary,
-                        //   ),
-                        //   onPressed: () {
-                        //     // Add code here to display pop-up with tags to select.
-                        //   },
-                        // ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SearchPage(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              // // Tags for categories.
-              // Text(
-              //   'Categories',
-              //   style: TextStyle(color: Colors.white),
-              // ),
-              // SizedBox(height: 10),
-              // Container(
-              //   height: 40,
-              //   child: ListView(
-              //     scrollDirection: Axis.horizontal,
-              //     children: <Widget>[
-              //       CategoryTag(label: 'Action'),
-              //       CategoryTag(label: 'Adventure'),
-              //       CategoryTag(label: 'Strategy'),
-              //       CategoryTag(label: 'RPG'),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(height: 20),
-              // Recents section.
-              Text(
-                'Recents',
-                style: TextStyle(color: Colors.white)
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                  itemCount: games.length,
-                  itemBuilder: (context, index) {
-                    return GameCard(games[index]);
-                  },
-                )
-              ),
-              SizedBox(height: 20),
-              // Recommended section.
-              Text(
-                'Recommended',
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                  itemCount: games.length,
-                  itemBuilder: (context, index) {
-                    return GameCard(games[index]);
-                  },
-                )
-              ),
-              SizedBox(height: 20),
-              // Explore-something-new section.
-              Text(
-                'Explore something new',
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                  itemCount: games.length,
-                  itemBuilder: (context, index) {
-                    return GameCard(games[index]);
-                  },
-                )
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildOfflineWithLocalDataContent() {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Home',
-          style: TextStyle(color: Colors.white)
-        ),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.favorite_border,
-              color: Theme.of(context).colorScheme.secondary
-            ),
-            onPressed: () {
-              // Add code here to navigate to Wishlist page.
-            },
-            tooltip: 'WishList',
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.info_outline,
-              color: Theme.of(context).colorScheme.secondary
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AboutPage()),
-              );
-            },
-            tooltip: 'About',
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Search bar.
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search_outlined,
-                          color: Theme.of(context).colorScheme.tertiary
-                        ),
-                        hintText: 'Search by title, genre, etc.',
-                        filled: true,
-                        fillColor: Color(0xFF232323),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide.none
-                        ),
-                        // suffixIcon: IconButton(
-                        //   icon: Icon(
-                        //     Icons.filter_alt_outlined,
-                        //     color: Theme.of(context).colorScheme.tertiary,
-                        //   ),
-                        //   onPressed: () {
-                        //     // Add code here to display pop-up with tags to select.
-                        //   },
-                        // ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SearchPage(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              // // Tags for categories.
-              // Text(
-              //   'Categories',
-              //   style: TextStyle(color: Colors.white),
-              // ),
-              // SizedBox(height: 10),
-              // Container(
-              //   height: 40,
-              //   child: ListView(
-              //     scrollDirection: Axis.horizontal,
-              //     children: <Widget>[
-              //       CategoryTag(label: 'Action'),
-              //       CategoryTag(label: 'Adventure'),
-              //       CategoryTag(label: 'Strategy'),
-              //       CategoryTag(label: 'RPG'),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(height: 20),
-              // Recents section.
-              Text(
-                'Recents',
-                style: TextStyle(color: Colors.white)
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                  itemCount: games.length,
-                  itemBuilder: (context, index) {
-                    return GameCard(games[index]);
-                  },
-                )
-              ),
-              SizedBox(height: 50),
-              // No internet image.
-              Center(
-                child: Image.asset(
-                  'assets/icons/i_bird.jpg',
-                  width: 150,
-                  height: 150,
-                ),
-              ),
-              SizedBox(height: 20),
-              // No internet message.
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'No connection',
-                      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'It seems you have no Internet connection\nConnect to a network to see other sections',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildNoInternetContent() {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Home',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.favorite_border,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            onPressed: () {
-              // Add code here to navigate to Wishlist page.
-            },
-            tooltip: 'WishList',
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.info_outline,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AboutPage()),
-              );
-            },
-            tooltip: 'About',
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // No internet image.
-            Image.asset(
-              'assets/icons/i_bird.jpg',
-              width: 150,
-              height: 150,
-            ),
-            SizedBox(height: 20),
-            // No internet message.
-            Text(
-              'No connection',
-              style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 10),
-            Text(
-              'It seems you have no Internet connection\nConnect to a network and try again',
-              style: TextStyle(color: Colors.white, fontSize: 14),
-              textAlign: TextAlign.center,
-            ),
-          ]
-        ),
-      ),
-    );
-  }
-}
-
-class CategoryTag extends StatefulWidget {
-  final String label;
-  final bool isSelected;
-
-  CategoryTag({required this.label, this.isSelected = false});
-
-  @override
-  _CategoryTagState createState() => _CategoryTagState();
-}
-
-class _CategoryTagState extends State<CategoryTag> {
-  late bool _isSelected;
 
   @override
   void initState() {
     super.initState();
-    _isSelected = widget.isSelected;
+    _loadData();
   }
 
-  void _behavior() {
+  Future<void> _loadData() async {
+    await _checkInternetConnection();
     setState(() {
-      _isSelected = !_isSelected;
+      isLoading = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 500));
+    await _loadRecommendedGames();
+    await _loadExploreGames();
+    await _loadRecentGames();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> _checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    setState(() {
+      hasInternetConnection =
+          connectivityResult.contains(ConnectivityResult.mobile) ||
+              connectivityResult.contains(ConnectivityResult.wifi);
+    });
+  }
+
+  Future<void> _loadRecommendedGames() async {
+    if (hasInternetConnection) {
+      String mostFrequentGenre = await db.getMostFrequentGenre();
+      if (mostFrequentGenre.isNotEmpty) {
+        if (mostFrequentGenre == "Card Game") {
+          mostFrequentGenre = "card";
+        }
+        final response = await http.get(Uri.parse(
+            'https://www.freetogame.com/api/games?category=$mostFrequentGenre'));
+        if (response.statusCode == 200) {
+          final List<dynamic> data = json.decode(response.body);
+          List<Game> allRecommendedGames =
+              data.map((json) => Game.fromJson(json)).toList();
+          List<Game> localGames = await db.getAllGames();
+          recommendedGames = allRecommendedGames
+              .where((game) =>
+                  !localGames.any((localGame) => localGame.id == game.id))
+              .toList();
+        }
+      }
+    }
+  }
+
+  Future<void> _loadExploreGames() async {
+    if (hasInternetConnection) {
+      final response =
+          await http.get(Uri.parse('https://www.freetogame.com/api/games'));
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        data.shuffle();
+        List<Game> allExploreGames =
+            data.map((json) => Game.fromJson(json)).toList();
+        List<Game> localGames = await db.getAllGames();
+        exploreGames = allExploreGames
+            .where((game) =>
+                !localGames.any((localGame) => localGame.id == game.id))
+            .take(5)
+            .toList();
+      }
+    }
+  }
+
+  Future<void> _loadRecentGames() async {
+    recentGames = await db.getRecentGames();
+    setState(() {
+      hasLocalData = recentGames.isNotEmpty;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: GestureDetector(
-        onTap: _behavior,
-        child: Chip(
-          label: Text(widget.label),
-          backgroundColor: _isSelected ? Theme.of(context).colorScheme.secondary : Color(0xFF232323),
-          labelStyle: const TextStyle(color: Colors.white),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.list,
+                color: Theme.of(context).colorScheme.secondary),
+            onPressed: () {
+              Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyListPage()))
+                  .then((_) => _loadData());
+            },
+            tooltip: 'WishList',
           ),
-        ),
+          IconButton(
+            icon: Icon(Icons.info_outline,
+                color: Theme.of(context).colorScheme.secondary),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AboutPage()));
+            },
+            tooltip: 'About',
+          ),
+        ],
+      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : (hasInternetConnection)
+              ? SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildSearchBar(context),
+                      if (hasLocalData) _buildSectionTitle('Recent Games'),
+                      if (hasLocalData) _buildGameList(recentGames, true),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildSectionTitle('Recommended for You'),
+                          _buildGameList(recommendedGames, false),
+                          _buildSectionTitle('Explore Something New'),
+                          _buildGameList(exploreGames, false),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (hasLocalData) _buildSectionTitle('Recent Games'),
+                    if (hasLocalData) _buildGameList(recentGames, true),
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/no_connection.png',
+                              width: 150,
+                              height: 150,
+                            ),
+                            const SizedBox(height: 20),
+                            const Text('No connection',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center),
+                            const SizedBox(height: 10),
+                            const Text(
+                              'It seems you have no Internet connection\nConnect to a network to see other sections',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
   }
-}
 
-class GameCard extends StatelessWidget {
-  final Game game;
-
-  GameCard(this.game);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Color(0xFF232323),
-      child: Container(
-        width: 250,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Image.network(game.thumbnail, fit: BoxFit.contain, width: 250, height: 125),
-                Positioned(
-                  top: 8.0,
-                  right: 8.0,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.favorite_border,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    onPressed: () {
-                      // Add code here to add the game to wishlist.
-                    },
+  Widget _buildGameList(List<Game> games, bool fromDB) {
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: games.length,
+        itemBuilder: (context, index) {
+          final game = games[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GameDetailsPage(
+                    game: game,
+                    hasInternetConnection: !fromDB,
                   ),
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                game.title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white
-                ),
+              ).then((_) => _loadData());
+            },
+            child: Card(
+              color: Theme.of(context).colorScheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8.0),
+                      topRight: Radius.circular(8.0),
+                    ),
+                    child: (!fromDB)
+                        ? Image.network(
+                            game.thumbnail,
+                            width: 200,
+                            height: 120,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(game.thumbnail),
+                            width: 200,
+                            height: 120,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          game.title.length > 20
+                              ? '${game.title.substring(0, 17)}...'
+                              : game.title,
+                          style: TextStyle(
+                            color: (fromDB)
+                                ? Theme.of(context).colorScheme.secondary
+                                : Theme.of(context).colorScheme.tertiary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${game.genre}   ⬤   ${game.platform}'.length > 23
+                              ? '${'${game.genre}   ⬤   ${game.platform}'.substring(0, 20)}...'
+                              : '${game.genre}   ⬤   ${game.platform}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                '${game.genre} ⬤ ${game.platform}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
+    );
+  }
+
+  Widget _buildSearchBar(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: TextField(
+            showCursor: false,
+            readOnly: true,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              hintText: 'Search',
+              hintStyle: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+              fillColor: Theme.of(context).colorScheme.primary,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(50),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchPage(
+                    hasInternetConnection: true,
+                  ),
+                ),
+              ).then((_) => _loadData());
+            },
+          ),
+        ),
+      ],
     );
   }
 }

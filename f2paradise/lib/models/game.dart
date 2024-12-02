@@ -1,7 +1,7 @@
 class Game {
   final int id; // database provides this variable
   final String title;
-  final String thumbnail;
+  String thumbnail;
   final String shortDescription;
   final String gameUrl;
   final String genre;
@@ -10,7 +10,8 @@ class Game {
   final String developer;
   final String releaseDate;
   int like; // -1 for dislike, 0 for neutral, 1 for like
-  bool played; // true if user marks this game as played
+  int played; // -1 for yet to play, 0 for neutral, 1 for played
+  int timestamp;
 
   Game({
     required this.id,
@@ -24,7 +25,8 @@ class Game {
     required this.developer,
     required this.releaseDate,
     this.like = 0,
-    this.played = false,
+    this.played = 0,
+    required this.timestamp,
   });
 
   factory Game.fromJson(Map<String, dynamic> json) {
@@ -40,7 +42,8 @@ class Game {
       developer: json['developer'],
       releaseDate: json['release_date'],
       like: json['like'] ?? 0,
-      played: json['played'] ?? false,
+      played: json['played'] ?? 0,
+      timestamp: json['timestamp'] ?? 0,
     );
   }
 
@@ -58,6 +61,7 @@ class Game {
       'release_date': releaseDate,
       'like': like,
       'played': played,
+      'timestamp': timestamp,
     };
   }
 }

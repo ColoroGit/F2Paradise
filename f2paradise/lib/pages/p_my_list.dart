@@ -1,72 +1,90 @@
+import 'dart:io';
+
 import 'package:f2paradise/models/game.dart';
 import 'package:f2paradise/pages/p_game_details.dart';
+import 'package:f2paradise/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
 class MyListPage extends StatefulWidget {
-  const MyListPage({super.key, required this.games});
-
-  final List<Game>
-      games; //this list must be obtained from the database and not to be received as a parameter
+  const MyListPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _MyListPageState();
 }
 
 class _MyListPageState extends State<MyListPage> {
+  final DatabaseHelper db = DatabaseHelper();
+
   List<String> appliedFilters = [];
   List<String> availableFilters = [
-    'MMORPG',
+    /*  */
+    'Played',
+    'Yet to play',
+    'Like',
+    'Dislike',
     'PC (Windows)',
+    'Browser',
     'Shooter',
-    'Action RPG',
-    'Fantasy',
-    'Sci-Fi',
     'Anime',
-    'PvP',
-    'PvE',
     'Battle Royale',
-    'Open World',
-    'Sandbox',
-    'Survival',
-    'Horror',
-    'Action',
-    'Adventure',
-    'Casual',
+    'MOBA',
     'MMO',
+    'MMORPG',
     'Racing',
     'Sports',
+    'Fighting',
     'Strategy',
-    'Card',
+    'Card Game',
     'Simulation',
     'Social',
-    '2D',
-    '3D',
-    'Browser'
   ];
 
   String searchQuery = '';
 
+  List<Game> games = [];
+  List<Game> filteredGames = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadGames();
+  }
+
+  Future<void> _loadGames() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    final gamesFromDb = await db.getAllGames();
+    setState(() {
+      games = gamesFromDb;
+      _filterGames();
+    });
+  }
+
+  void _filterGames() {
+    setState(() {
+      filteredGames = games.where((game) {
+        bool matchesFilters = appliedFilters.isEmpty ||
+            appliedFilters.every((filter) {
+              if (filter == 'Played') return game.played == 1;
+              if (filter == 'Yet to play') return game.played == -1;
+              if (filter == 'Like') return game.like == 1;
+              if (filter == 'Dislike') return game.like == -1;
+              return game.platform.contains(filter) ||
+                  game.publisher.contains(filter) ||
+                  game.developer.contains(filter);
+            });
+
+        bool matchesSearchQuery = searchQuery.isEmpty ||
+            game.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+            game.publisher.toLowerCase().contains(searchQuery.toLowerCase()) ||
+            game.developer.toLowerCase().contains(searchQuery.toLowerCase());
+
+        return matchesFilters && matchesSearchQuery;
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Game> filteredGames = widget.games.where((game) {
-      bool matchesFilters = appliedFilters.isEmpty ||
-          appliedFilters.any((filter) {
-            return game.genre.contains(filter) ||
-                game.platform.contains(filter) ||
-                game.publisher.contains(filter) ||
-                game.developer.contains(filter);
-          });
-
-      bool matchesSearchQuery = searchQuery.isEmpty ||
-          game.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
-          game.genre.toLowerCase().contains(searchQuery.toLowerCase()) ||
-          game.publisher.toLowerCase().contains(searchQuery.toLowerCase()) ||
-          game.developer.toLowerCase().contains(searchQuery.toLowerCase()) ||
-          game.platform.toLowerCase().contains(searchQuery.toLowerCase());
-
-      return matchesFilters && matchesSearchQuery;
-    }).toList();
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -114,6 +132,7 @@ class _MyListPageState extends State<MyListPage> {
                                     }
                                   });
                                   Navigator.pop(context);
+                                  _filterGames();
                                 },
                               );
                             }).toList(),
@@ -133,11 +152,13 @@ class _MyListPageState extends State<MyListPage> {
                   setState(() {
                     searchQuery = value;
                   });
+                  _filterGames();
                 },
                 onTap: () {
                   setState(() {
                     searchQuery = '';
                   });
+                  _filterGames();
                 },
               ),
             ),
@@ -167,6 +188,7 @@ class _MyListPageState extends State<MyListPage> {
                           setState(() {
                             appliedFilters.remove(filter);
                           });
+                          _filterGames();
                         },
                       ),
                     );
@@ -185,9 +207,12 @@ class _MyListPageState extends State<MyListPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => GameDetailsPage(game: game),
+                            builder: (context) => GameDetailsPage(
+                              game: game,
+                              hasInternetConnection: false,
+                            ),
                           ),
-                        );
+                        ).then((_) => _loadGames());
                       },
                       child: Card(
                         color: Theme.of(context).colorScheme.primary,
@@ -196,8 +221,8 @@ class _MyListPageState extends State<MyListPage> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
-                              child: Image.network(
-                                game.thumbnail,
+                              child: Image.file(
+                                File(game.thumbnail),
                                 width: double.infinity,
                                 height: 200,
                                 fit: BoxFit.cover,
